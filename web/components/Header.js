@@ -4,7 +4,7 @@ import React, { Component } from 'react'
 import { AppBar, Toolbar, Typography } from '@material-ui/core';
 
 export const Header = (props) => {
-  const {title = 'Missing title'} = props;
+  const title = props.title;
 
   return (
     <AppBar position="static">
