@@ -1,12 +1,13 @@
-import PropTypes from 'prop-types'
-import React from 'react'
-import Layout from '../components/Layout'
-import { ShieldCard, AthenaCard, GreekCard } from '../components/greek-card';
-import client from '../client';
 import Grid from '@material-ui/core/Grid';
+import { Input } from '@material-ui/core';
+import PropTypes from 'prop-types';
+import React from 'react';
+import client from '../client';
+import { GreekCard } from '../components/greek-card';
+import Layout from '../components/Layout';
 
-const cardQuery = `
-  *[_type == "card"] {
+const cardQuery = (searchTerm) => `
+  *[_type == "card" ${searchTerm ? `&& title match  "*${searchTerm}*"` : '' }] {
     "imageUrl": image.asset->url,
     ...
   }
@@ -17,20 +18,24 @@ class IndexPage extends React.Component {
     config: PropTypes.object
   }
 
+  constructor(props) {
+    super(props)
+    this.state = Object.assign({}, props);
+  }
+
   static async getInitialProps () {
     // Add site config from sanity
-    return client.fetch(cardQuery).then(cards => {
-      return {
-        cards
-      }
-    })
+    const cards = await client.fetch(cardQuery())
+    return {cards};
+  }
+
+  async setSearchTerm(searchTerm) {
+    const cards = await client.fetch(cardQuery(searchTerm));
+    this.setState({cards});
   }
 
   render () {
-    const {cards} = this.props;
-
-    const card = cards[0];
-    console.log(card)
+    const {cards} = this.state;
     return (
       <Layout
       config= {{
@@ -42,8 +47,8 @@ class IndexPage extends React.Component {
           cards.map( (card) => {
             return (
               <Grid item xs={12} md={6} lg={4} key={card.slug.current}>
-              <GreekCard 
-                
+              <GreekCard
+
                 config={{
                   image: card.imageUrl,
                   title: card.title,
@@ -55,7 +60,6 @@ class IndexPage extends React.Component {
             )
           })}
           </Grid>
-        }
       </Layout>
     )
   }
