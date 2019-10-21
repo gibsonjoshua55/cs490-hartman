@@ -5,7 +5,7 @@ import React from 'react';
 import client from '../client';
 import { GreekCard } from '../components/greek-card';
 import Layout from '../components/Layout';
-
+import Link from 'next/link';
 const cardQuery = (searchTerm) => `
   *[_type == "card" ${searchTerm ? `&& title match  "*${searchTerm}*"` : '' }] {
     "imageUrl": image.asset->url,
@@ -47,15 +47,19 @@ class IndexPage extends React.Component {
           cards.map( (card) => {
             return (
               <Grid item xs={12} md={6} lg={4} key={card.slug.current}>
-              <GreekCard
+                <Link href={`/card?slug=${card.slug.current}`}>
+                  <a>
+                    <GreekCard
 
-                config={{
-                  image: card.imageUrl,
-                  title: card.title,
-                  cardtitle: card.title,
-                  descrip: card.description
-                }}
-              ></GreekCard>
+                      config={{
+                        image: card.imageUrl,
+                        title: card.title,
+                        cardtitle: card.title,
+                        descrip: card.description
+                      }}
+                    ></GreekCard>
+                  </a>
+                </Link>
               </Grid>
             )
           })}
