@@ -5,6 +5,10 @@ import React from 'react';
 import client from '../client';
 import { GreekCard } from '../components/greek-card';
 import Layout from '../components/Layout';
+import Fab from '@material-ui/core/Fab';
+import SortMenu from '../components/sort_menu';
+import FilterMenu from '../components/filter_menu';
+import SearchAppBar from '../components/search_bar';
 import Link from 'next/link';
 const cardQuery = (searchTerm) => `
   *[_type == "card" ${searchTerm ? `&& title match  "*${searchTerm}*"` : '' }] {
@@ -39,9 +43,18 @@ class IndexPage extends React.Component {
     return (
       <Layout
       config= {{
-        title: "Page Title yo"
+        title: "Enchiridion"
       }} >
+        <SearchAppBar onChange={e => this.setSearchTerm(e.target.value)}></SearchAppBar>
+        
         <h1> Here is some content</h1>
+        <SortMenu></SortMenu>
+        <br></br>
+        <FilterMenu></FilterMenu>
+        <br></br>
+        <Fab color="primary" href="http://www.google.com">
+        More
+        </Fab>
         <Grid container spacing={3}>
         {
           cards.map( (card) => {
