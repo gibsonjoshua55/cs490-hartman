@@ -15,7 +15,37 @@ const cardQuery = (slug) => `
     ...
   }
 `
+//function to create background component
+const Background = (props) => {
+  const {backgroundText} = props;
+  return( 
+    <div>
+      <h2>Card Background</h2>
+      <p>{backgroundText}</p>
+    </div>
+  )
+}
 
+//function to create narration or greek instruction component
+const Narration = (props) => {
+  const {narrationText} = props;
+  return( 
+    <div>
+      <h2>Narration</h2>
+      <p>{narrationText}</p>
+    </div>
+  )
+}
+
+//function to create greek phrase component 
+const Phrase = (props) => {
+  const {phraseText} = props;
+  return( 
+    <div>
+      <p>{phraseText}</p>
+    </div>
+  )
+}
 class CardPage extends React.Component {
   static propTypes = {
     config: PropTypes.object
@@ -55,12 +85,11 @@ class CardPage extends React.Component {
                 cardType: card.cardType.type,
               }}
             ></GreekCard>
-            <h2>Card Background</h2>
-            <p>{card.background}</p>
-            <h2>Greek Instructions</h2>
-            <p>{card.instructions}</p>
-            <h2>Narration</h2>
-            <p>{card.phrase}</p>
+            
+            <Background backgroundText={card.background} />
+            <Narration narrationText={card.instructions} />
+            <Phrase phraseText={card.phrase}/>
+
           </Grid>
           </Grid>
       </Layout>
