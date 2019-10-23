@@ -6,6 +6,7 @@ import client from '../client';
 import { GreekCard } from '../components/greek-card';
 import Layout from '../components/Layout';
 import { withRouter } from 'next/router';
+import { typography } from '@material-ui/system';
 
 const cardQuery = (slug) => `
   *[_type == "card" && slug.current == "${slug}"] {
@@ -41,7 +42,7 @@ class CardPage extends React.Component {
     return (
       <Layout
       config= {{
-        title: "Page Title yo"
+        title: card.title
       }} >
         <Grid container spacing={3}>
           <Grid item xs={12} md={6} lg={4} key={card.slug.current}>
@@ -54,6 +55,12 @@ class CardPage extends React.Component {
                 cardType: card.cardType.type,
               }}
             ></GreekCard>
+            <h2>Card Background</h2>
+            <p>{card.background}</p>
+            <h2>Greek Instructions</h2>
+            <p>{card.instructions}</p>
+            <h2>Greek Phrase</h2>
+            <p>{card.phrase}</p>
           </Grid>
           </Grid>
       </Layout>
