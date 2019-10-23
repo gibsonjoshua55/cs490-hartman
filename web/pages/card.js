@@ -59,7 +59,7 @@ class CardPage extends React.Component {
             <p>{card.background}</p>
             <h2>Greek Instructions</h2>
             <p>{card.instructions}</p>
-            <h2>Greek Phrase</h2>
+            <h2>Narration</h2>
             <p>{card.phrase}</p>
           </Grid>
           </Grid>
