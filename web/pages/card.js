@@ -6,7 +6,8 @@ import client from '../client';
 import { GreekCard } from '../components/greek-card';
 import Layout from '../components/Layout';
 import { withRouter } from 'next/router';
-import { typography } from '@material-ui/system';
+import { typography, fontStyle } from '@material-ui/system';
+
 
 const cardQuery = (slug) => `
   *[_type == "card" && slug.current == "${slug}"] {
@@ -15,22 +16,37 @@ const cardQuery = (slug) => `
     ...
   }
 `
+//defines the style of div
+const divStyle = {
+  backgroundColor: '#db9219',
+  fontFamily: 'Times New Roman'
+  
+};
+
+//defines the style of layout
+const layStyle = {
+  backgroundColor: 'darkslategrey',
+  fontFamily: 'Times New Roman'
+  
+};
+
 //function to create background component
 const Background = (props) => {
   const {backgroundText} = props;
   return( 
-    <div>
+    <div style={divStyle}>
       <h2>Card Background</h2>
       <p>{backgroundText}</p>
     </div>
   )
 }
 
+
 //function to create narration or greek instruction component
 const Narration = (props) => {
   const {narrationText} = props;
   return( 
-    <div>
+    <div style={divStyle}>
       <h2>Narration</h2>
       <p>{narrationText}</p>
     </div>
@@ -41,7 +57,7 @@ const Narration = (props) => {
 const Phrase = (props) => {
   const {phraseText} = props;
   return( 
-    <div>
+    <div style={divStyle}>
       <p>{phraseText}</p>
     </div>
   )
@@ -70,10 +86,12 @@ class CardPage extends React.Component {
       return(<Typography variant={'h1'}>Card Not Found</Typography>)
     }
     return (
+      
       <Layout
       config= {{
         title: card.title
-      }} >
+      }} style = "background-color: #333333" >
+        
         <Grid container spacing={3}>
           <Grid item xs={12} md={6} lg={4} key={card.slug.current}>
             <GreekCard
