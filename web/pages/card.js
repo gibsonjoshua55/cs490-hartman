@@ -9,6 +9,7 @@ import { withRouter } from 'next/router';
 import { typography, fontStyle } from '@material-ui/system';
 
 
+
 const cardQuery = (slug) => `
   *[_type == "card" && slug.current == "${slug}"] {
     "imageUrl": image.asset->url,
@@ -23,12 +24,6 @@ const divStyle = {
   
 };
 
-//defines the style of layout
-const layStyle = {
-  backgroundColor: 'darkslategrey',
-  fontFamily: 'Times New Roman'
-  
-};
 
 //function to create background component
 const Background = (props) => {
@@ -87,10 +82,10 @@ class CardPage extends React.Component {
     }
     return (
       
-      <Layout
+      <Layout style = {layStyle}
       config= {{
         title: card.title
-      }} style = "background-color: #333333" >
+      }}  >
         
         <Grid container spacing={3}>
           <Grid item xs={12} md={6} lg={4} key={card.slug.current}>
