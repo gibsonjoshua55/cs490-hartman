@@ -10,6 +10,7 @@ import { withRouter } from 'next/router';
 const cardQuery = (slug) => `
   *[_type == "card" && slug.current == "${slug}"] {
     "imageUrl": image.asset->url,
+    cardType->,
     ...
   }
 `
@@ -25,7 +26,6 @@ class CardPage extends React.Component {
   }
 
   static async getInitialProps ({query}) {
-    console.log(query);
     // Add site config from sanity
     const queryStr = cardQuery(query.slug);
     const cards = await client.fetch(queryStr);

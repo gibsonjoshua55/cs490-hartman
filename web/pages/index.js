@@ -1,5 +1,5 @@
 import Grid from '@material-ui/core/Grid';
-import { Input } from '@material-ui/core';
+import { Input, Typography } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import React from 'react';
 import client from '../client';
@@ -13,6 +13,7 @@ import Link from 'next/link';
 const cardQuery = (searchTerm) => `
   *[_type == "card" ${searchTerm ? `&& title match  "*${searchTerm}*"` : '' }] {
     "imageUrl": image.asset->url,
+    cardType->,
     ...
   }
 `
@@ -46,8 +47,8 @@ class IndexPage extends React.Component {
         title: "Enchiridion"
       }} >
         <SearchAppBar onChange={e => this.setSearchTerm(e.target.value)}></SearchAppBar>
-        
-        <h1> Here is some content</h1>
+
+        <Typography variant="h1"> Here is some content</Typography>
         <SortMenu></SortMenu>
         <br></br>
         <FilterMenu></FilterMenu>
