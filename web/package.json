@@ -4,9 +4,9 @@
   "version": "1.0.1",
   "author": "Sanity <hello@sanity.io>",
   "scripts": {
-    "dev": "node server.js",
+    "dev": "node index.js",
     "build": "next build",
-    "start": "NODE_ENV=production node server.js",
+    "start": "NODE_ENV=production node index.js",
     "format": "prettier-eslint --write \"**/*.js\" \"!.next/**\" \"!node_modules/**\" \"!out/**\"",
     "lint": "eslint ."
   },
