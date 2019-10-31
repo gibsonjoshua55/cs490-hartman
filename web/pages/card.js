@@ -6,7 +6,7 @@ import client from '../client';
 import { GreekCard } from '../components/greek-card';
 import Layout from '../components/Layout';
 import { withRouter } from 'next/router';
-import { typography, fontStyle } from '@material-ui/system';
+import { typography, fontStyle, textAlign } from '@material-ui/system';
 import {makeStyles} from '@material-ui/core';
 
 
@@ -18,31 +18,65 @@ const cardQuery = (slug) => `
     ...
   }
 `
-//defines the style of div
-const divStyle = {
-  backgroundColor: '#db9219',
-  fontFamily: 'Times New Roman'
-  
-};
+
+
+const useStyles = makeStyles( (theme) => {
+  return({
+    box: {
+      backgroundColor: theme.palette.primary.main,
+    },
+    
+    
+    
+  });
+})
 
 
 //function to create background component
 const Background = (props) => {
   const {backgroundText} = props;
+  const  classes = useStyles();
   return( 
-    <div style={divStyle}>
+    <div className = {classes.box}>
       <h2>Card Background</h2>
       <p>{backgroundText}</p>
     </div>
   )
 }
 
+//function to create an instruction component
+//includes if statement for display
+const Vocabulary = (props) => {
+  const {vocabText} = props;
+  const  classes = useStyles();
+  if (!props.vocabText)
+  {
+    return (
+      <div/>
+    ) 
+  }
+  else
+  {
+    return( 
+    
+        <div className = {classes.box}>
+        <h2 className = {classes.h2}>Recommended Vocabulary</h2>
+        <p>{vocabText}</p>
+      </div>
+  
+    )
+  }
+}
+
+
+
 
 //function to create narration or greek instruction component
 const Narration = (props) => {
   const {narrationText} = props;
+  const  classes = useStyles();
   return( 
-    <div style={divStyle}>
+    <div className = {classes.box}>
       <h2>Narration</h2>
       <p>{narrationText}</p>
     </div>
@@ -52,8 +86,9 @@ const Narration = (props) => {
 //function to create greek phrase component 
 const Phrase = (props) => {
   const {phraseText} = props;
+  const  classes = useStyles();
   return( 
-    <div style={divStyle}>
+    <div className = {classes.box}>
       <p>{phraseText}</p>
     </div>
   )
@@ -83,7 +118,7 @@ class CardPage extends React.Component {
     }
     return (
       
-      <Layout style = {layStyle}
+      <Layout 
       config= {{
         title: card.title
       }}  >
@@ -101,6 +136,7 @@ class CardPage extends React.Component {
             ></GreekCard>
             
             <Background backgroundText={card.background} />
+            <Vocabulary vocabText={card.vocab}/>
             <Narration narrationText={card.instructions} />
             <Phrase phraseText={card.phrase}/>
 
