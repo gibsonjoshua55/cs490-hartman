@@ -1,4 +1,3 @@
-import bcp47 from 'bcp47';
 
 export default {
   name: 'site-config',
@@ -18,6 +17,12 @@ export default {
       name: 'url',
       type: 'url',
       description: 'The main site url. Used to create canonical url',
+    },
+    {
+      name: 'sitePassword',
+      title: 'Site Password',
+      type: 'string',
+      description: 'Password used to enter the site'
     }
   ],
 };
