@@ -19,11 +19,14 @@ const useStyles = makeStyles( (theme) => {
     actionArea: {
       display: "flex",
       flexDirection: "column",
+      justifyContent: "center",
+      alignItems: "center"
     },
     media: {
       height: 200,
       width: 200,
       display: "flex",
+      justifyContent: "center"
     },
     text: {
       padding: 10,
@@ -71,32 +74,26 @@ const useStyles = makeStyles( (theme) => {
       paddingTop: 0,
       paddingBottom: 0,
     },
+    highlightOverride: {
+      transition: undefined,
+      opacity: 100,
+      color: 'blue'
+    }
   });
 })
-  
+
 function testClickable(slug) {
   if (slug) {
     return(
       Router.push(`/card?slug=${slug.current}`)
     )
-  } else {
-    return(
-      "return false"
-    )
   }
 }
 
-export const GreekCard = (props) => {
-  const classes = useStyles();
-  const config = props.config;
-  console.log(props);
-  
+const GreekCardContent = (props) => {
+  const {config, classes} = props;
   return (
-    
-    <Card
-      className={classes.card}
-    >
-    <CardActionArea className={classes.actionArea} onClick={() => testClickable(config.slug)}>        
+    <div className={classes.actionArea}>
       <CardContent className={classes.titleContent} >
         <div className={classes.text} style={{margin: "auto"}}>
           <Typography variant="h5" component="h2" >
@@ -104,11 +101,11 @@ export const GreekCard = (props) => {
           </Typography>
         </div>
       </CardContent>
-      <CardMedia
-        className={classes.media}
-          image={config.image}
-          title={config.title}
-        />
+          <CardMedia
+            className={classes.media}
+            image={config.image}
+            title={config.title}
+          />
         <CardContent className={classes.typeContent}>
           <div className={classes.text} >
               <Typography variant="h6" component="h2" >
@@ -123,7 +120,29 @@ export const GreekCard = (props) => {
             </Typography>
           </div>
         </CardContent>
-      </CardActionArea>
+    </div>
+  )
+}
+
+export const GreekCard = (props) => {
+  const classes = useStyles();
+  const config = props.config;
+
+  return (
+
+    <Card
+      className={classes.card}
+    >
+    {
+      config.slug ?
+        (<CardActionArea className={classes.actionArea} onClick={() => testClickable(config.slug)}>
+          <GreekCardContent {...props} classes={classes} />
+        </CardActionArea>)
+        :
+        (
+          <GreekCardContent {...props} classes={classes} />
+        )
+    }
     </Card>
   )
 }
