@@ -61,19 +61,16 @@ class IndexPage extends React.Component {
           cards.map( (card) => {
             return (
               <Grid item xs={12} md={6} lg={4} key={card.slug.current}>
-                <Link href={`/card?slug=${card.slug.current}`}>
-                  <a>
                     <GreekCard
-
                       config={{
                         image: card.imageUrl,
                         title: card.title,
                         cardtitle: card.title,
-                        descrip: card.description
+                        descrip: card.description,
+                        cardType: card.cardType.type,
+                        slug: card.slug
                       }}
                     ></GreekCard>
-                  </a>
-                </Link>
               </Grid>
             )
           })}
