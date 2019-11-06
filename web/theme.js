@@ -5,8 +5,19 @@ import { red } from '@material-ui/core/colors';
 const theme = createMuiTheme({
   typography: {
     fontFamily: [
-      'PT Sans'
-    ]
+      'PT Sans',
+    ].join(','),
+    h6: {
+      fontFamily: [
+        'PT Serif',
+      ]
+    },
+    h5: {
+      //fontWeight: "fontWeightBold",
+      fontFamily: [
+        'PT Serif',
+      ]
+    }
   },
   palette: {
     primary: {

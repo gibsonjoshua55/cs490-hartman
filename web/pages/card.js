@@ -46,12 +46,12 @@ class CardPage extends React.Component {
         <Grid container spacing={3}>
           <Grid item xs={12} md={6} lg={4} key={card.slug.current}>
             <GreekCard
-
               config={{
                 image: card.imageUrl,
                 title: card.title,
                 cardtitle: card.title,
-                descrip: card.description
+                descrip: card.description,
+                cardType: card.cardType.type,
               }}
             ></GreekCard>
           </Grid>
