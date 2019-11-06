@@ -1,5 +1,5 @@
 import Grid from '@material-ui/core/Grid';
-import { Typography } from '@material-ui/core';
+import { Typography, Paper } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import React from 'react';
 import client from '../client';
@@ -22,8 +22,10 @@ const cardQuery = (slug) => `
 
 const useStyles = makeStyles( (theme) => {
   return({
-    box: {
+    paper: {
       backgroundColor: theme.palette.primary.main,
+      
+      textAlign: 'center',
     },
     
     
@@ -37,10 +39,10 @@ const Background = (props) => {
   const {backgroundText} = props;
   const  classes = useStyles();
   return( 
-    <div className = {classes.box}>
+    <Paper className = {classes.paper}>
       <h2>Card Background</h2>
       <p>{backgroundText}</p>
-    </div>
+    </Paper>
   )
 }
 
@@ -76,10 +78,10 @@ const Narration = (props) => {
   const {narrationText} = props;
   const  classes = useStyles();
   return( 
-    <div className = {classes.box}>
+    <Paper className = {classes.paper}>
       <h2>Narration</h2>
       <p>{narrationText}</p>
-    </div>
+    </Paper>
   )
 }
 
@@ -88,9 +90,9 @@ const Phrase = (props) => {
   const {phraseText} = props;
   const  classes = useStyles();
   return( 
-    <div className = {classes.box}>
+    <Paper className = {classes.paper}>
       <p>{phraseText}</p>
-    </div>
+    </Paper>
   )
 }
 class CardPage extends React.Component {
@@ -123,7 +125,11 @@ class CardPage extends React.Component {
         title: card.title
       }}  >
         
-        <Grid container spacing={3}>
+        <Grid 
+          container spacing={3}
+          container direction="row"
+          justify="center"
+          alignItems="center" >
           <Grid item xs={12} md={6} lg={4} key={card.slug.current}>
             <GreekCard
               config={{
@@ -134,14 +140,15 @@ class CardPage extends React.Component {
                 cardType: card.cardType.type,
               }}
             ></GreekCard>
-            
+          </Grid>
+          <Grid item xs = {12} md={6} lg={4}>
             <Background backgroundText={card.background} />
             <Vocabulary vocabText={card.vocab}/>
             <Narration narrationText={card.instructions} />
             <Phrase phraseText={card.phrase}/>
-
           </Grid>
-          </Grid>
+        </Grid>
+          
       </Layout>
     )
   }
