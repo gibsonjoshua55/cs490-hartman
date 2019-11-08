@@ -1,15 +1,18 @@
+import { makeStyles, Paper, Typography,  } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
-import { Typography, Paper } from '@material-ui/core';
+import IconButton from '@material-ui/core/IconButton';
+import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
+import NavigateNextIcon from '@material-ui/icons/NavigateNext';
+import { withRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import React from 'react';
 import client from '../client';
+import CardDetailsBackground from '../components/card-details-background';
+import CardDetailsNarration from '../components/card-details-narration';
+import CardDetailsVocabulary from '../components/card-details-vocabulary';
+import CardDetailsPhrase from '../components/card-details-phrase';
 import { GreekCard } from '../components/greek-card';
 import Layout from '../components/Layout';
-import { withRouter } from 'next/router';
-import { typography, fontStyle, textAlign } from '@material-ui/system';
-import {makeStyles} from '@material-ui/core';
-
-
 
 const cardQuery = (slug) => `
   *[_type == "card" && slug.current == "${slug}"] {
@@ -19,82 +22,56 @@ const cardQuery = (slug) => `
   }
 `
 
-
+//outlines styles used in this file
 const useStyles = makeStyles( (theme) => {
   return({
-    paper: {
-      backgroundColor: theme.palette.primary.main,
-      
-      textAlign: 'center',
+    //style for the next button
+    nextbutton: {
+      margin: theme.spacing(1),
+      fontSize: 'large',
+      color: theme.palette.secondary.main,
+      position: 'absolute',
+      top: '40%',
+      right: '10%',
     },
-    
-    
-    
+    //style for the backbutton
+    backbutton:{
+      margin: theme.spacing(1),
+      fontSize: 'large',
+      color: theme.palette.secondary.main,
+      position: 'absolute',
+      top: '40%',
+      left: '10%'
+    }
   });
 })
 
-
-//function to create background component
-const Background = (props) => {
-  const {backgroundText} = props;
-  const  classes = useStyles();
-  return( 
-    <Paper className = {classes.paper}>
-      <h2>Card Background</h2>
-      <p>{backgroundText}</p>
-    </Paper>
+//creates the backbutton function on the page
+const BackButton = () => {
+  const classes = useStyles();
+  return(
+    <IconButton className={classes.backbutton}  aria-label="previous card"  >
+      <NavigateBeforeIcon 
+        fontSize = 'large'
+        //position="absolute"
+        />
+    </IconButton>
   )
 }
 
-//function to create an instruction component
-//includes if statement for display
-const Vocabulary = (props) => {
-  const {vocabText} = props;
-  const  classes = useStyles();
-  if (!props.vocabText)
-  {
-    return (
-      <div/>
-    ) 
-  }
-  else
-  {
-    return( 
-    
-        <div className = {classes.box}>
-        <h2 className = {classes.h2}>Recommended Vocabulary</h2>
-        <p>{vocabText}</p>
-      </div>
-  
-    )
-  }
-}
-
-
-
-
-//function to create narration or greek instruction component
-const Narration = (props) => {
-  const {narrationText} = props;
-  const  classes = useStyles();
-  return( 
-    <Paper className = {classes.paper}>
-      <h2>Narration</h2>
-      <p>{narrationText}</p>
-    </Paper>
+//creates the nextbutton function on the page
+const NextButton = () => {
+  const classes = useStyles();
+  return(
+    <IconButton className={classes.nextbutton} aria-label="next card" >
+      <NavigateNextIcon 
+        fontSize = 'large' 
+        />
+    </IconButton>
   )
 }
 
-//function to create greek phrase component 
-const Phrase = (props) => {
-  const {phraseText} = props;
-  const  classes = useStyles();
-  return( 
-    <Paper className = {classes.paper}>
-      <p>{phraseText}</p>
-    </Paper>
-  )
-}
+
 class CardPage extends React.Component {
   static propTypes = {
     config: PropTypes.object
@@ -132,22 +109,31 @@ class CardPage extends React.Component {
           alignItems="center" >
           <Grid item xs={12} md={6} lg={4} key={card.slug.current}>
             <GreekCard
+
               config={{
                 image: card.imageUrl,
                 title: card.title,
                 cardtitle: card.title,
-                descrip: card.description,
-                cardType: card.cardType.type,
+                descrip: card.description
               }}
             ></GreekCard>
           </Grid>
           <Grid item xs = {12} md={6} lg={4}>
-            <Background backgroundText={card.background} />
-            <Vocabulary vocabText={card.vocab}/>
-            <Narration narrationText={card.instructions} />
-            <Phrase phraseText={card.phrase}/>
+
+            
+            <CardDetailsBackground backgroundText={card.background} />
+            <CardDetailsVocabulary vocabText={card.vocab}/>
+            <CardDetailsNarration narrationText={card.instructions} />
+            <CardDetailsPhrase phraseText={card.phrase}/>
+
           </Grid>
+
         </Grid>
+        
+        
+        <BackButton />
+        <NextButton />
+          
           
       </Layout>
     )
