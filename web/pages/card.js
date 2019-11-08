@@ -33,6 +33,13 @@ const useStyles = makeStyles( (theme) => {
       position: 'absolute',
       top: '40%',
       right: '10%',
+      bottom: 'auto',
+      [theme.breakpoints.down('md')]: {
+          top: 'auto',
+          bottom: '20',
+          right: '40%',
+      }
+      
     },
     //style for the backbutton
     backbutton:{
@@ -41,7 +48,12 @@ const useStyles = makeStyles( (theme) => {
       color: theme.palette.secondary.main,
       position: 'absolute',
       top: '40%',
-      left: '10%'
+      left: '10%',
+      [theme.breakpoints.down('md')]: {
+        top: 'auto',
+        bottom: '20',
+        left: '40%',
+    }
     }
   });
 })
@@ -52,9 +64,7 @@ const BackButton = () => {
   return(
     <IconButton className={classes.backbutton}  aria-label="previous card"  >
       <NavigateBeforeIcon 
-        fontSize = 'large'
-        //position="absolute"
-        />
+        fontSize = 'large'/>
     </IconButton>
   )
 }
@@ -65,8 +75,7 @@ const NextButton = () => {
   return(
     <IconButton className={classes.nextbutton} aria-label="next card" >
       <NavigateNextIcon 
-        fontSize = 'large' 
-        />
+        fontSize = 'large'/>
     </IconButton>
   )
 }
