@@ -4,7 +4,7 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import Checkbox from '@material-ui/core/Checkbox';
 
-export default function FilterMenu() {
+export default function FilterMenu(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleClick = event => {
@@ -14,6 +14,16 @@ export default function FilterMenu() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const filters = [
+    {name: 'item', label:"Item Cards"},
+    {name: 'spell', label:"Spell Cards"},
+    {name: 'monster', label:"Monster Cards"},
+    {name: 'event', label:"Event Cards"},
+    {name: 'follower', label:"Follower Cards"}
+  ]
+
+  const {onChange} = props;
 
   return (
     <div>
@@ -27,26 +37,14 @@ export default function FilterMenu() {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-            <MenuItem >
-                <Checkbox value="item" label="Item Cards" />
-                Item Cards
-            </MenuItem>
-            <MenuItem >
-              <Checkbox value="spell" label="Spell Cards" />
-              Spell Cards
-            </MenuItem>
-            <MenuItem >
-                <Checkbox value="monster" label="Monster Cards" />
-                Monster Cards
-            </MenuItem>
-            <MenuItem >
-                <Checkbox value="event" label="Events Cards" />
-                Events Cards
-            </MenuItem>
-            <MenuItem >
-                <Checkbox value="follower" label="Follower Cards" />
-                Follower Cards
-            </MenuItem>
+        {
+            filters.map(filter => (
+              <MenuItem key={`filter-${filter.name}`}>
+                <Checkbox value={filter.name} label={filter.label} />
+                  {filter.label}
+              </MenuItem>
+            ))
+        }
             <MenuItem onClick={handleClose}>Close</MenuItem>
       </Menu>
     </div>
