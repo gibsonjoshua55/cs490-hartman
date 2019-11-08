@@ -47,6 +47,12 @@ export default {
       type: 'string',
       title: 'Greek Phrase'
     },
+
+    {
+      name: 'vocab',
+      type: 'text',
+      title: 'Recommended Vocabulary'
+    },
     {
       name: 'image',
       type: 'image',
