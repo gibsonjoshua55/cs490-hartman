@@ -10,6 +10,8 @@ import SortMenu from '../components/sort_menu';
 import FilterMenu from '../components/filter_menu';
 import SearchAppBar from '../components/search_bar';
 import Link from 'next/link';
+import { cardFetchAll } from '../queries/cardFetchAll';
+import { CardOptions } from '../components/card-options';
 const cardQuery = (searchTerm) => `
   *[_type == "card" ${searchTerm ? `&& title match  "*${searchTerm}*"` : '' }] {
     "imageUrl": image.asset->url,
@@ -25,18 +27,30 @@ class IndexPage extends React.Component {
 
   constructor(props) {
     super(props)
-    this.state = Object.assign({}, props);
+    this.state = Object.assign({options: {}}, props);
   }
 
   static async getInitialProps () {
     // Add site config from sanity
-    const cards = await client.fetch(cardQuery())
+    const query = cardFetchAll({});
+    console.log(query);
+    const cards = await client.fetch(query);
+    console.log(cards);
     return {cards};
   }
 
   async setSearchTerm(searchTerm) {
-    const cards = await client.fetch(cardQuery(searchTerm));
-    this.setState({cards});
+    const {options} = this.state;
+    options.searchTerm = searchTerm;
+    const cards = await client.fetch(cardFetchAll(options));
+    this.setState({cards, options});
+  }
+
+  async setFilterTypes(filterTypes) {
+    const {options} = this.state;
+    options.filterTypes = filterTypes;
+    const cards = await client.fetch(cardFetchAll(options));
+    this.setState({cards, options});
   }
 
   render () {
@@ -49,9 +63,7 @@ class IndexPage extends React.Component {
         <SearchAppBar onChange={e => this.setSearchTerm(e.target.value)}></SearchAppBar>
 
         <Typography variant="h1"> Here is some content</Typography>
-        <SortMenu></SortMenu>
-        <br></br>
-        <FilterMenu></FilterMenu>
+        <CardOptions />
         <br></br>
         <Fab color="primary" href="http://www.google.com">
         More
