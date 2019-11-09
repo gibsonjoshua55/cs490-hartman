@@ -6,7 +6,8 @@ import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 
-export default function SortMenu() {
+export default function SortMenu(props) {
+  const {dir, onChange} = props;
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleClick = event => {
@@ -29,15 +30,12 @@ export default function SortMenu() {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <RadioGroup aria-label="gender" name="gender1" >
+        <RadioGroup aria-label="gender" name="gender1" value={dir} onChange={(event) => onChange(event.target.value)}>
             <MenuItem >
-                <FormControlLabel value="card" control={<Radio />} label="Card Type" />
+                <FormControlLabel value="asc" control={<Radio />} label="A to Z" />
             </MenuItem>
             <MenuItem >
-                <FormControlLabel value="alpha" control={<Radio />} label="A to Z" />
-            </MenuItem>
-            <MenuItem >
-                <FormControlLabel value="reverseAlpha" control={<Radio />} label="Z to A" />
+                <FormControlLabel value="desc" control={<Radio />} label="Z to A" />
             </MenuItem>
         </RadioGroup>
 

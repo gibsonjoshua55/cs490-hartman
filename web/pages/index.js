@@ -11,14 +11,12 @@ import FilterMenu from '../components/filter_menu';
 import SearchAppBar from '../components/search_bar';
 import Link from 'next/link';
 import { cardFetchAll } from '../queries/cardFetchAll';
-import { CardOptions } from '../components/card-options';
-const cardQuery = (searchTerm) => `
-  *[_type == "card" ${searchTerm ? `&& title match  "*${searchTerm}*"` : '' }] {
-    "imageUrl": image.asset->url,
-    cardType->,
-    ...
-  }
-`
+import {CardOptions} from '../components/card-options';
+
+const cardTypesQuery = `
+*[_type == "card-type" ]{
+  type
+}`
 
 class IndexPage extends React.Component {
   static propTypes = {
@@ -27,16 +25,15 @@ class IndexPage extends React.Component {
 
   constructor(props) {
     super(props)
-    this.state = Object.assign({options: {}}, props);
+    this.state = Object.assign({options: {sortDir: 'asc'}}, props);
   }
 
   static async getInitialProps () {
     // Add site config from sanity
     const query = cardFetchAll({});
-    console.log(query);
     const cards = await client.fetch(query);
-    console.log(cards);
-    return {cards};
+    const cardTypes = (await client.fetch(cardTypesQuery)).map(cardType => cardType.type);
+    return {cards, cardTypes};
   }
 
   async setSearchTerm(searchTerm) {
@@ -49,12 +46,20 @@ class IndexPage extends React.Component {
   async setFilterTypes(filterTypes) {
     const {options} = this.state;
     options.filterTypes = filterTypes;
+    const query = cardFetchAll(options);
+    const cards = await client.fetch(query);
+    this.setState({cards, options});
+  }
+
+  async setDirChange(sortDir) {
+    const {options} = this.state;
+    options.sortDir = sortDir;
     const cards = await client.fetch(cardFetchAll(options));
     this.setState({cards, options});
   }
 
   render () {
-    const {cards} = this.state;
+    const {cards, cardTypes, options} = this.state;
     return (
       <Layout
       config= {{
@@ -63,11 +68,13 @@ class IndexPage extends React.Component {
         <SearchAppBar onChange={e => this.setSearchTerm(e.target.value)}></SearchAppBar>
 
         <Typography variant="h1"> Here is some content</Typography>
-        <CardOptions />
+        <CardOptions
+          cardTypes={cardTypes}
+          onFilterChange={(filterTypes) => this.setFilterTypes(filterTypes)}
+          onSortChange={(sortDir) => this.setDirChange(sortDir)}
+          sortDir={options.sortDir}
+        />
         <br></br>
-        <Fab color="primary" href="http://www.google.com">
-        More
-        </Fab>
         <Grid container spacing={3}>
         {
           cards.map( (card) => {

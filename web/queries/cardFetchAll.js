@@ -1,7 +1,8 @@
 const getSearchClause = (searchTerm) => (` title match  "*${searchTerm}*"`)
 
 const getFilterClauses = (filterTypes) => {
-  return filterTypes.map(filterType => `cardType == '${filterType}' `);
+  const mappedFilterTypes = filterTypes.map(filterType => `cardType->type == "${filterType}" `);
+  return `(${mappedFilterTypes.join(' || ')})`
 }
 
 const joinFilterClauses = (filterClauses) => {
@@ -18,8 +19,8 @@ export const cardFetchAll = (options) => {
   if (searchTerm) {
     filterClauses.push(getSearchClause(searchTerm));
   }
-  if (filterTypes && filterTypes > 0) {
-    filterClauses.push(...getFilterClauses(filterTypes))
+  if (filterTypes && filterTypes.length > 0) {
+    filterClauses.push(getFilterClauses(filterTypes))
   }
   const sortClause = `| order(title ${sortDir ? sortDir : 'asc'})`;
   return `
