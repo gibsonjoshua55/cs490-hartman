@@ -10,13 +10,13 @@ import SortMenu from '../components/sort_menu';
 import FilterMenu from '../components/filter_menu';
 import SearchAppBar from '../components/search_bar';
 import Link from 'next/link';
-const cardQuery = (searchTerm) => `
-  *[_type == "card" ${searchTerm ? `&& title match  "*${searchTerm}*"` : '' }] {
-    "imageUrl": image.asset->url,
-    cardType->,
-    ...
-  }
-`
+import { cardFetchAll } from '../queries/cardFetchAll';
+import {CardOptions} from '../components/card-options';
+
+const cardTypesQuery = `
+*[_type == "card-type" ]{
+  type
+}`
 
 class IndexPage extends React.Component {
   static propTypes = {
@@ -25,22 +25,41 @@ class IndexPage extends React.Component {
 
   constructor(props) {
     super(props)
-    this.state = Object.assign({}, props);
+    this.state = Object.assign({options: {sortDir: 'asc'}}, props);
   }
 
   static async getInitialProps () {
     // Add site config from sanity
-    const cards = await client.fetch(cardQuery())
-    return {cards};
+    const query = cardFetchAll({});
+    const cards = await client.fetch(query);
+    const cardTypes = (await client.fetch(cardTypesQuery)).map(cardType => cardType.type);
+    return {cards, cardTypes};
   }
 
   async setSearchTerm(searchTerm) {
-    const cards = await client.fetch(cardQuery(searchTerm));
-    this.setState({cards});
+    const {options} = this.state;
+    options.searchTerm = searchTerm;
+    const cards = await client.fetch(cardFetchAll(options));
+    this.setState({cards, options});
+  }
+
+  async setFilterTypes(filterTypes) {
+    const {options} = this.state;
+    options.filterTypes = filterTypes;
+    const query = cardFetchAll(options);
+    const cards = await client.fetch(query);
+    this.setState({cards, options});
+  }
+
+  async setDirChange(sortDir) {
+    const {options} = this.state;
+    options.sortDir = sortDir;
+    const cards = await client.fetch(cardFetchAll(options));
+    this.setState({cards, options});
   }
 
   render () {
-    const {cards} = this.state;
+    const {cards, cardTypes, options} = this.state;
     return (
       <Layout
       config= {{
@@ -49,13 +68,13 @@ class IndexPage extends React.Component {
         <SearchAppBar onChange={e => this.setSearchTerm(e.target.value)}></SearchAppBar>
 
         <Typography variant="h1"> Here is some content</Typography>
-        <SortMenu></SortMenu>
+        <CardOptions
+          cardTypes={cardTypes}
+          onFilterChange={(filterTypes) => this.setFilterTypes(filterTypes)}
+          onSortChange={(sortDir) => this.setDirChange(sortDir)}
+          sortDir={options.sortDir}
+        />
         <br></br>
-        <FilterMenu></FilterMenu>
-        <br></br>
-        <Fab color="primary" href="http://www.google.com">
-        More
-        </Fab>
         <Grid container spacing={3}>
         {
           cards.map( (card) => {

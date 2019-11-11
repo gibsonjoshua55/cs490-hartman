@@ -4,9 +4,10 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import Checkbox from '@material-ui/core/Checkbox';
 
-export default function FilterMenu() {
-  const [anchorEl, setAnchorEl] = React.useState(null);
+export default function FilterMenu(props) {
+  const {onChange, cardTypes} = props;
 
+  const [anchorEl, setAnchorEl] = React.useState(null);
   const handleClick = event => {
     setAnchorEl(event.currentTarget);
   };
@@ -14,6 +15,24 @@ export default function FilterMenu() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+
+  const initialState = {};
+  cardTypes.forEach(cardType => initialState[cardType] = false);
+
+  const [filterState, setFilterState] = React.useState(initialState);
+
+  const onFilterChange = (newFilterState) => {
+    setFilterState(newFilterState);
+    onChange(newFilterState)
+  }
+
+  const handleMenuClick = (filterName) => () => {
+    const currentState = filterState[filterName];
+    const newState = Object.assign({}, filterState);
+    newState[filterName] = !currentState;
+    onFilterChange(newState);
+  }
 
   return (
     <div>
@@ -27,26 +46,14 @@ export default function FilterMenu() {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-            <MenuItem >
-                <Checkbox value="item" label="Item Cards" />
-                Item Cards
-            </MenuItem>
-            <MenuItem >
-              <Checkbox value="spell" label="Spell Cards" />
-              Spell Cards
-            </MenuItem>
-            <MenuItem >
-                <Checkbox value="monster" label="Monster Cards" />
-                Monster Cards
-            </MenuItem>
-            <MenuItem >
-                <Checkbox value="event" label="Events Cards" />
-                Events Cards
-            </MenuItem>
-            <MenuItem >
-                <Checkbox value="follower" label="Follower Cards" />
-                Follower Cards
-            </MenuItem>
+        {
+            cardTypes.map(cardType => {
+              return(<MenuItem key={`filter-${cardType}`} onClick={handleMenuClick(cardType)}>
+                <Checkbox value={cardType} label={cardType} checked={filterState[cardType]} onChange={handleMenuClick(cardType)}  />
+                  {cardType}
+              </MenuItem>)
+            })
+        }
             <MenuItem onClick={handleClose}>Close</MenuItem>
       </Menu>
     </div>
