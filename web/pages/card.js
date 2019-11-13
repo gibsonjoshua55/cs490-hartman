@@ -11,9 +11,11 @@ import CardDetailsBackground from "../components/card-details-background";
 import CardDetailsNarration from "../components/card-details-narration";
 import CardDetailsVocabulary from "../components/card-details-vocabulary";
 import CardDetailsPhrase from "../components/card-details-phrase";
+import CardDetailsSection from "../components/card-details-section";
 import { GreekCard } from "../components/greek-card";
 import Layout from "../components/Layout";
 import Router from 'next/router';
+
 
 const cardQuery = slug => `
   *[_type == "card" && slug.current == "${slug}"] {
@@ -143,9 +145,10 @@ class CardPage extends React.Component {
                 descrip: card.description,
                 cardType: card.cardType.type
               }}
-            ></GreekCard>
+            ></GreekCard> 
           </Grid>
           <Grid item xs={12} md={6} lg={4}>
+            <CardDetailsSection sectionText={card.cardSection.section}/>
             <CardDetailsBackground backgroundText={card.background} />
             <CardDetailsVocabulary vocabText={card.vocab} />
             <CardDetailsNarration narrationText={card.instructions} />
