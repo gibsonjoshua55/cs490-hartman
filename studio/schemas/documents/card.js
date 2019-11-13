@@ -28,6 +28,13 @@ export default {
       validation: Rule => Rule.required()
     },
     {
+      name: 'cardSection',
+      title: 'Card Section',
+      type: 'reference',
+      to: [{type: 'card-section'}],
+      validation: Rule => Rule.required()
+    },
+    {
       name: 'description',
       type: 'text',
       title: 'Card Description'

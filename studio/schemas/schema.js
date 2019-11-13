@@ -8,6 +8,7 @@ import schemaTypes from 'all:part:@sanity/base/schema-type';
 import siteConfig from './documents/siteConfig';
 import card from './documents/card';
 import cardType from './documents/card-type';
+import cardSection from './documents/card-section';
 
 // Then we give our schema to the builder and provide the result to Sanity
 export default createSchema({
@@ -17,6 +18,7 @@ export default createSchema({
   types: schemaTypes.concat([
     siteConfig,
     card,
-    cardType
+    cardType,
+    cardSection
   ]),
 });
