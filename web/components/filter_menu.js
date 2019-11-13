@@ -5,7 +5,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Checkbox from '@material-ui/core/Checkbox';
 
 export default function FilterMenu(props) {
-  const {onChange, cardTypes} = props;
+  const {onChange, cardSections} = props;
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const handleClick = event => {
@@ -18,7 +18,7 @@ export default function FilterMenu(props) {
 
 
   const initialState = {};
-  cardTypes.forEach(cardType => initialState[cardType] = false);
+  cardSections.forEach(cardType => initialState[cardType] = false);
 
   const [filterState, setFilterState] = React.useState(initialState);
 
@@ -47,7 +47,7 @@ export default function FilterMenu(props) {
         onClose={handleClose}
       >
         {
-            cardTypes.map(cardType => {
+            cardSections.map(cardType => {
               return(<MenuItem key={`filter-${cardType}`} onClick={handleMenuClick(cardType)}>
                 <Checkbox value={cardType} label={cardType} checked={filterState[cardType]} onChange={handleMenuClick(cardType)}  />
                   {cardType}

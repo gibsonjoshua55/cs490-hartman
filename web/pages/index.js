@@ -1,21 +1,16 @@
 import Grid from '@material-ui/core/Grid';
-import { Input, Typography } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import React from 'react';
 import client from '../client';
+import { CardOptions } from '../components/card-options';
 import { GreekCard } from '../components/greek-card';
 import Layout from '../components/Layout';
-import Fab from '@material-ui/core/Fab';
-import SortMenu from '../components/sort_menu';
-import FilterMenu from '../components/filter_menu';
 import SearchAppBar from '../components/search_bar';
-import Link from 'next/link';
 import { cardFetchAll } from '../queries/cardFetchAll';
-import {CardOptions} from '../components/card-options';
 
-const cardTypesQuery = `
-*[_type == "card-type" ]{
-  type
+const cardSectionsQuery = `
+*[_type == "card-section" ]{
+  section
 }`
 
 class IndexPage extends React.Component {
@@ -32,8 +27,8 @@ class IndexPage extends React.Component {
     // Add site config from sanity
     const query = cardFetchAll({});
     const cards = await client.fetch(query);
-    const cardTypes = (await client.fetch(cardTypesQuery)).map(cardType => cardType.type);
-    return {cards, cardTypes};
+    const cardSections = (await client.fetch(cardSectionsQuery)).map(cardSection => cardSection.section);
+    return {cards, cardSections};
   }
 
   async setSearchTerm(searchTerm) {
@@ -59,7 +54,7 @@ class IndexPage extends React.Component {
   }
 
   render () {
-    const {cards, cardTypes, options} = this.state;
+    const {cards, cardSections, options} = this.state;
     return (
       <Layout
       config= {{
@@ -67,9 +62,8 @@ class IndexPage extends React.Component {
       }} >
         <SearchAppBar onChange={e => this.setSearchTerm(e.target.value)}></SearchAppBar>
 
-        <Typography variant="h1"> Here is some content</Typography>
         <CardOptions
-          cardTypes={cardTypes}
+          cardSections={cardSections}
           onFilterChange={(filterTypes) => this.setFilterTypes(filterTypes)}
           onSortChange={(sortDir) => this.setDirChange(sortDir)}
           sortDir={options.sortDir}

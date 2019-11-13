@@ -1,7 +1,7 @@
 const getSearchClause = (searchTerm) => (` title match  "*${searchTerm}*"`)
 
 const getFilterClauses = (filterTypes) => {
-  const mappedFilterTypes = filterTypes.map(filterType => `cardType->type == "${filterType}" `);
+  const mappedFilterTypes = filterTypes.map(filterType => `cardSection->section == "${filterType}" `);
   return `(${mappedFilterTypes.join(' || ')})`
 }
 
@@ -23,11 +23,14 @@ export const cardFetchAll = (options) => {
     filterClauses.push(getFilterClauses(filterTypes))
   }
   const sortClause = `| order(title ${sortDir ? sortDir : 'asc'})`;
-  return `
+  const query =  `
   *[_type == "card" ${joinFilterClauses(filterClauses)}] ${sortClause} {
     "imageUrl": image.asset->url,
     cardType->,
+    cardSection->,
     ...
   }
 `
+  console.log(query);
+  return query;
 }

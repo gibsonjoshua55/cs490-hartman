@@ -14,7 +14,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export const CardOptions = props => {
-  const { onSortChange, sortDir, onFilterChange, cardTypes } = props;
+  const { onSortChange, sortDir, onFilterChange, cardSections } = props;
   const classes = useStyles();
   return (
     <div className={classes.container}>
@@ -26,7 +26,7 @@ export const CardOptions = props => {
       </div>
       <div className={classes.item}>
         <FilterMenu
-          cardTypes={cardTypes}
+          cardSections={cardSections}
           onSortChange={onSortChange}
           onChange={filters => {
             const filterNames = Object.keys(filters);
