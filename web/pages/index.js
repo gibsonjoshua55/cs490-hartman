@@ -28,7 +28,16 @@ class IndexPage extends React.Component {
     const query = cardFetchAll({});
     const cards = await client.fetch(query);
     const cardSections = (await client.fetch(cardSectionsQuery)).map(cardSection => cardSection.section);
-    return {cards, cardSections};
+    const sections = [];
+    for (const sectionName of cardSections) {
+      const section = { name: sectionName};
+      console.log(sectionName);
+      const cards = (await client.fetch(cardFetchAll({filterTypes: [sectionName]})));
+      section.cards = cards;
+      sections.push(section);
+    }
+    console.log(sections);
+    return {cards, cardSections, sections};
   }
 
   async setSearchTerm(searchTerm) {
@@ -54,7 +63,9 @@ class IndexPage extends React.Component {
   }
 
   render () {
-    const {cards, cardSections, options} = this.state;
+    const {cards, cardSections, options, sections} = this.state;
+    // sections is an array of section elements
+    // section.name and section.cards
     return (
       <Layout
       config= {{
