@@ -1,12 +1,12 @@
-import Grid from '@material-ui/core/Grid';
 import PropTypes from 'prop-types';
 import React from 'react';
 import client from '../client';
 import { CardOptions } from '../components/card-options';
-import { GreekCard } from '../components/greek-card';
 import Layout from '../components/Layout';
 import SearchAppBar from '../components/search_bar';
 import { cardFetchAll } from '../queries/cardFetchAll';
+import GridListItem from '../components/grid-list-item';
+import Typography from '@material-ui/core';
 
 const cardSectionsQuery = `
 *[_type == "card-section" ]{
@@ -80,25 +80,20 @@ class IndexPage extends React.Component {
           sortDir={options.sortDir}
         />
         <br></br>
-        <Grid container spacing={3}>
+          
         {
-          cards.map( (card) => {
-            return (
-              <Grid item xs={12} md={6} lg={4} key={card.slug.current}>
-                    <GreekCard
-                      config={{
-                        image: card.imageUrl,
-                        title: card.title,
-                        cardtitle: card.title,
-                        descrip: card.description,
-                        cardType: card.cardType.type,
-                        slug: card.slug
-                      }}
-                    ></GreekCard>
-              </Grid>
-            )
-          })}
-          </Grid>
+        sections.map( section => {
+          return(
+            <div>
+            {/* <Typography variant="h5" component="h2" >
+              {section.name}
+            </Typography> */}
+            <GridListItem section={section} />
+            </div>
+          )
+        })
+        }
+
       </Layout>
     )
   }

@@ -135,7 +135,7 @@ export const GreekCard = (props) => {
     >
     {
       config.slug ?
-        (<CardActionArea className={classes.actionArea} onClick={() => testClickable(config.slug)}>
+        (<CardActionArea className={classes.actionArea} onClick={() => testClickable(config.slug)} disableRipple="true" disablefocusripple="true">
           <GreekCardContent {...props} classes={classes} />
         </CardActionArea>)
         :
