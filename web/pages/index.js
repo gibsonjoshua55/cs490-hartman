@@ -85,7 +85,7 @@ class IndexPage extends React.Component {
         sections.map( section => {
           return(
             <div>
-            <Typography variant="h5" component="h2" >
+            <Typography variant="h4" component="h2" >
               {section.name}
             </Typography>
             <GridListItem section={section} />
