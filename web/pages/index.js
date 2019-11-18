@@ -6,7 +6,7 @@ import Layout from '../components/Layout';
 import SearchAppBar from '../components/search_bar';
 import { cardFetchAll } from '../queries/cardFetchAll';
 import GridListItem from '../components/grid-list-item';
-import Typography from '@material-ui/core';
+import {Typography} from '@material-ui/core';
 
 const cardSectionsQuery = `
 *[_type == "card-section" ]{
@@ -85,9 +85,9 @@ class IndexPage extends React.Component {
         sections.map( section => {
           return(
             <div>
-            {/* <Typography variant="h5" component="h2" >
+            <Typography variant="h5" component="h2" >
               {section.name}
-            </Typography> */}
+            </Typography>
             <GridListItem section={section} />
             </div>
           )
