@@ -17,7 +17,14 @@ const theme = createMuiTheme({
       fontFamily: [
         'PT Serif',
       ]
-    }
+    },
+    h4: {
+      fontFamily: [
+        'PT Serif',
+      ],
+      color: '#E38652',
+      margin: 10,
+    },
   },
   palette: {
     primary: {
