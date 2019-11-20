@@ -4,6 +4,7 @@ import { makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles(theme => ({
   container: {
+    margin: 10,
     display: "flex",
     alignContent: "left"
   },
@@ -14,7 +15,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export const CardOptions = props => {
-  const { onSortChange, sortDir, onFilterChange, cardSections } = props;
+  const { onSortChange, sortDir} = props;
   const classes = useStyles();
   return (
     <div className={classes.container}>
@@ -23,17 +24,6 @@ export const CardOptions = props => {
           onChange={onSortChange}
           dir={sortDir}
         ></SortMenu>
-      </div>
-      <div className={classes.item}>
-        <FilterMenu
-          cardSections={cardSections}
-          onSortChange={onSortChange}
-          onChange={filters => {
-            const filterNames = Object.keys(filters);
-            const selected = filterNames.filter(filter => filters[filter]);
-            onFilterChange(selected);
-          }}
-        ></FilterMenu>
       </div>
     </div>
   );

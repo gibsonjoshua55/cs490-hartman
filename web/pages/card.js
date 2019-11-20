@@ -19,18 +19,20 @@ const cardQuery = slug => `
   *[_type == "card" && slug.current == "${slug}"] {
     "imageUrl": image.asset->url,
     cardType->,
+    cardSection->,
     ...
   }[0]
 `;
-const previousCardQuery = title => `
-*[_type == "card" && title < "${title}" ] | order(title desc) {
+const previousCardQuery = (title, section) => `
+*[_type == "card" && title < "${title}" && cardSection->section == "${section}" ] | order(title desc) {
   "imageUrl": image.asset->url,
   cardType->,
+  cardSection->,
   ...
 }[0]`;
 
-const nextCardQuery = title => `
-*[_type == "card" && title > "${title}" ] | order(title asc) {
+const nextCardQuery = (title, section) => `
+*[_type == "card" && title > "${title}" && cardSection->section == "${section}" ] | order(title asc) {
   "imageUrl": image.asset->url,
   cardType->,
   ...
@@ -111,8 +113,9 @@ class CardPage extends React.Component {
     // Add site config from sanity
     const queryStr = cardQuery(query.slug);
     const card = await client.fetch(queryStr);
-    const previousCard = await client.fetch(previousCardQuery(card.title));
-    const nextCard = await client.fetch(nextCardQuery(card.title));
+    const prevQuery = previousCardQuery(card.title, card.cardSection.section);
+    const previousCard = await client.fetch(prevQuery);
+    const nextCard = await client.fetch(nextCardQuery(card.title, card.cardSection.section));
     return { card, previousCard, nextCard };
   }
 
@@ -127,6 +130,9 @@ class CardPage extends React.Component {
           title: card.title
         }}
       >
+        <Typography variant="h4" component="h2" >
+              {card.cardSection.section}
+        </Typography>
         <Grid container spacing={3} container direction="row" justify="center" alignItems="center">
           <Grid item xs={12} md={6} lg={4} key={card.slug.current}>
             <GreekCard

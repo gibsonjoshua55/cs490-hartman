@@ -12,6 +12,20 @@ const cardSectionsQuery = `
 *[_type == "card-section" ]{
   section
 }`
+const querySections = async (cardSections, options = {}) => {
+  const sections = [];
+  for (const sectionName of cardSections) {
+    const section = { name: sectionName};
+    const cards = (await client.fetch(cardFetchAll({
+        filterTypes: [sectionName],
+        searchTerm: options.searchTerm,
+        sortDir: options.sortDir
+    })));
+    section.cards = cards;
+    sections.push(section);
+  }
+  return sections;
+}
 
 class IndexPage extends React.Component {
   static propTypes = {
@@ -27,39 +41,34 @@ class IndexPage extends React.Component {
     // Add site config from sanity
     const query = cardFetchAll({});
     const cards = await client.fetch(query);
-    const cardSections = (await client.fetch(cardSectionsQuery)).map(cardSection => cardSection.section);
-    const sections = [];
-    for (const sectionName of cardSections) {
-      const section = { name: sectionName};
-      console.log(sectionName);
-      const cards = (await client.fetch(cardFetchAll({filterTypes: [sectionName]})));
-      section.cards = cards;
-      sections.push(section);
-    }
-    console.log(sections);
+    const cardSections = await (await client.fetch(cardSectionsQuery)).map(cardSection => cardSection.section);
+    const sections = await querySections(cardSections);
     return {cards, cardSections, sections};
   }
 
+
+
   async setSearchTerm(searchTerm) {
-    const {options} = this.state;
+    console.log(searchTerm);
+    const {options, cardSections} = this.state;
     options.searchTerm = searchTerm;
-    const cards = await client.fetch(cardFetchAll(options));
-    this.setState({cards, options});
+    const sections = await querySections(cardSections, options)
+    this.setState({sections, options});
   }
 
-  async setFilterTypes(filterTypes) {
-    const {options} = this.state;
-    options.filterTypes = filterTypes;
-    const query = cardFetchAll(options);
-    const cards = await client.fetch(query);
-    this.setState({cards, options});
-  }
+  // async setFilterTypes(filterTypes) {
+  //   const {options} = this.state;
+  //   options.filterTypes = filterTypes;
+  //   const query = cardFetchAll(options);
+  //   const cards = await client.fetch(query);
+  //   this.setState({cards, options});
+  // }
 
   async setDirChange(sortDir) {
-    const {options} = this.state;
+    const {options, cardSections} = this.state;
     options.sortDir = sortDir;
-    const cards = await client.fetch(cardFetchAll(options));
-    this.setState({cards, options});
+    const sections = await querySections(cardSections, options)
+    this.setState({sections, options});
   }
 
   render () {
@@ -80,11 +89,11 @@ class IndexPage extends React.Component {
           sortDir={options.sortDir}
         />
         <br></br>
-          
+
         {
         sections.map( section => {
           return(
-            <div>
+            <div key={`section-${section.name}`}>
             <Typography variant="h4" component="h2" >
               {section.name}
             </Typography>

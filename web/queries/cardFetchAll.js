@@ -31,6 +31,5 @@ export const cardFetchAll = (options) => {
     ...
   }
 `
-  console.log(query);
   return query;
 }
