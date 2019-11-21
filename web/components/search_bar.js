@@ -66,7 +66,6 @@ export default function SearchAppBar(props) {
           >
           </IconButton>
           <Typography className={classes.title} variant="h6" noWrap>
-            Material-UI
           </Typography>
           <div className={classes.search}>
             <InputBase
