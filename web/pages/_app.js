@@ -11,20 +11,6 @@ import theme from '../theme';
 import cookies from 'next-cookies'
 import { validateJwt } from '../util/validate-jwt';
 
-const siteConfigQuery = `
-  *[_id == "global-config"] {
-    ...,
-    logo {asset->{extension, url}},
-    mainNavigation[] -> {
-      ...,
-      "title": page->title
-    },
-    footerNavigation[] -> {
-      ...,
-      "title": page->title
-    }
-  }[0]
-  `
 
 class App extends BaseApp {
 
@@ -62,17 +48,7 @@ class App extends BaseApp {
       pageProps = await Component.getInitialProps(ctx)
     }
 
-    // Add site config from sanity
-    return client.fetch(siteConfigQuery).then(config => {
-      if (!config) {
-        return {pageProps}
-      }
-      if (config && pageProps) {
-        pageProps.config = config
-      }
-
-      return {pageProps}
-    })
+    return {pageProps}
   }
 
   static redirectPage(res, path) {
