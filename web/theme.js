@@ -7,6 +7,11 @@ const theme = createMuiTheme({
     fontFamily: [
       'PT Sans',
     ].join(','),
+    h1: {
+      fontFamily: [
+        'Cinzel',
+      ]
+    },
     h6: {
       fontFamily: [
         'PT Serif',
