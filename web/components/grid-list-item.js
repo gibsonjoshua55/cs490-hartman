@@ -3,6 +3,7 @@ import GridListTile from '@material-ui/core/GridListTile';
 import { GreekCard } from '../components/greek-card';
 import { makeStyles, withWidth } from '@material-ui/core';
 import { isWidthUp } from '@material-ui/core/withWidth';
+import { SectionCard } from './section-card';
 
 const useStyles = makeStyles( (theme) => {
     return({
@@ -29,11 +30,11 @@ const GridListItem = (props) => {
         if (isWidthUp('xl', props.width)) {
           return 3.75;
         }
-    
+
         if (isWidthUp('lg', props.width)) {
           return 3.75;
         }
-    
+
         if (isWidthUp('md', props.width)) {
           return 2.75;
         }
@@ -41,17 +42,21 @@ const GridListItem = (props) => {
         if (isWidthUp('sm', props.width)) {
             return 1.5;
           }
-    
+
         return 1.25;
       }
     let numItems = getGridListCols();
-    if (numItems > section.cards.length ) {
-        numItems = section.cards.length;
+    if (numItems > (section.cards.length+1) ) {
+        numItems = section.cards.length +1;
     }
+    console.log(section)
     return(
         <div className={classes.root}>
-            
+
             <GridList className={classes.gridList} cols={numItems} cellHeight="auto" spacing={10}>
+              <GridListTile >
+                <SectionCard imageUrl={section.imageUrl}/>
+              </GridListTile>
                 {section.cards.map( card => {
                     return (
                         <GridListTile  key={card.slug.current} >

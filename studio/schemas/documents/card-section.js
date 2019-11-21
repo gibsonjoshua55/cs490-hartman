@@ -7,6 +7,11 @@ export default {
       name: 'section',
       type: 'string',
       title: 'Section',
+    },
+    {
+      name: 'image',
+      type: 'image',
+      title: 'Image'
     }
   ]
 };
