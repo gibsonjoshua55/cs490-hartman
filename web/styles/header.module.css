@@ -1,0 +1,33 @@
+.header {
+    position: static;
+    text-align: center;
+    height: 120px;
+}
+
+.upperThick {
+    position: relative;
+    height: 8px;
+    top: 10px;
+    background: linear-gradient(to right, #D0672D 0%, #D0672D 27.5%, #231F1F 27.5%, #231F1F 72.5%, #D0672D 72.5%, #D0672D 100%);
+}
+
+.upperThin {
+    position: relative;
+    height: 4px;
+    top: 6px;
+    background: linear-gradient(to right, #D0672D 0%, #D0672D 28.5%, #231F1F 28.5%, #231F1F 71.5%, #D0672D 71.5%, #D0672D 100%);
+}
+
+.lowerThick {
+    position: relative;
+    height: 8px;
+    bottom: 10px;
+    background: linear-gradient(to right, #D0672D 0%, #D0672D 27.5%, #231F1F 27.5%, #231F1F 72.5%, #D0672D 72.5%, #D0672D 100%);
+}
+
+.lowerThin {
+    position: relative;
+    height: 4px;
+    bottom: 6px;
+    background: linear-gradient(to right, #D0672D 0%, #D0672D 28.5%, #231F1F 28.5%, #231F1F 71.5%, #D0672D 71.5%, #D0672D 100%);
+}

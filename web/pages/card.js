@@ -127,7 +127,7 @@ class CardPage extends React.Component {
     return (
       <Layout
         config={{
-          title: card.title
+          title: "Enchiridion"
         }}
       >
         <Typography variant="h4" component="h2" >
