@@ -10,14 +10,14 @@ import {Typography} from '@material-ui/core';
 
 const cardSectionsQuery = `
 *[_type == "card-section" ]{
-  section
+  section,
+  "imageUrl": image.asset->url
 }`
 const querySections = async (cardSections, options = {}) => {
   const sections = [];
-  for (const sectionName of cardSections) {
-    const section = { name: sectionName};
+  for (const section of cardSections) {
     const cards = (await client.fetch(cardFetchAll({
-        filterTypes: [sectionName],
+        filterTypes: [section.name],
         searchTerm: options.searchTerm,
         sortDir: options.sortDir
     })));
@@ -41,28 +41,17 @@ class IndexPage extends React.Component {
     // Add site config from sanity
     const query = cardFetchAll({});
     const cards = await client.fetch(query);
-    const cardSections = await (await client.fetch(cardSectionsQuery)).map(cardSection => cardSection.section);
+    const cardSections = await (await client.fetch(cardSectionsQuery)).map(cardSection => ({name: cardSection.section, imageUrl: cardSection.imageUrl}));
     const sections = await querySections(cardSections);
     return {cards, cardSections, sections};
   }
 
-
-
   async setSearchTerm(searchTerm) {
-    console.log(searchTerm);
     const {options, cardSections} = this.state;
     options.searchTerm = searchTerm;
     const sections = await querySections(cardSections, options)
     this.setState({sections, options});
   }
-
-  // async setFilterTypes(filterTypes) {
-  //   const {options} = this.state;
-  //   options.filterTypes = filterTypes;
-  //   const query = cardFetchAll(options);
-  //   const cards = await client.fetch(query);
-  //   this.setState({cards, options});
-  // }
 
   async setDirChange(sortDir) {
     const {options, cardSections} = this.state;
